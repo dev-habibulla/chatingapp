@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+
+  --primary-font-text: font-family: 'Nunito', sans-serif;
+  --secondary-font-text: font-family:font-family: 'Open Sans', sans-serif;
+
+}
+
+.registration {
+  display: flex;
+}
+
+.registration .left {
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  justify-content: end;
+}
+
+.registration .left .text_container {
+  width: 60%;
+  margin-top: 100px;
+}
+
+.registration .left .text_container p {
+  margin-bottom: 50px;
+}
+
+.inputcss {
+  width: 90%;
+  margin: 15px 0 !important;
+}
+
+.regbtn {
+  width: 90%;
+  padding: 15px 0 !important;
+  border-radius: 50px !important;
+  margin-top: 20px !important;
+  margin-bottom: 35px !important;
+}
+
+.eye {
+  position: relative;
+  top: 35px;
+  right: 30px;
+}
+
+.focus {
+  font-weight: bold;
+  color: orange;
+}
+
+.registration .right {
+  width: 50%;
+  height: 100vh;
+}
+
+.registration .right .bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Login Page css */
+
+
+.login {
+  display: flex;
+}
+
+.login .left {
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  justify-content: end;
+}
+
+.login .left .text_container {
+  width: 60%;
+  margin-top: 100px;
+}
+
+.login .left .text_container h2 {
+
+  font-family: var(--secondary-font-text);
+  color: #03014C;
+  font-weight: 700;
+  font-size: 33px;
+  margin-bottom: 30px;
+}
+
+.inputcss {
+  width: 90%;
+  margin: 15px 0 !important;
+}
+
+.loginbtn {
+  width: 90%;
+  font-family: var(--secondary-font-text) !important;
+  font-size: 21px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  padding: 15px 0 !important;
+  border-radius: 50px !important;
+  margin-top: 20px !important;
+  margin-bottom: 35px !important;
+}
+
+.eye {
+  position: relative;
+  top: 35px;
+  right: 30px;
+}
+
+.focus {
+  font-weight: bold;
+  color: orange;
+}
+
+.login .right {
+  width: 50%;
+  height: 100vh;
+}
+
+.login .right .bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.alert {
+  width: 85%;
+  /* color: #d32f2f !important;
+  background: none !important; */
+
+}
