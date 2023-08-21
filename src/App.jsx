@@ -28,10 +28,6 @@ const router = createBrowserRouter(
     path="/home"
     element={<Home/>}
   />
-    <Route
-    path="/pactic"
-    element={<Pactic/>}
-  />
    </Route>
 
   )
