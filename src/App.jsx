@@ -9,6 +9,8 @@ import {
 import Registation from './pages/Registration';
 import Login from './pages/Login';
 import { ToastContainer, toast } from 'react-toastify';
+import Pactic from './pages/pactic';
+import Home from './pages/Home';
 const router = createBrowserRouter(
   createRoutesFromElements(
 
@@ -21,6 +23,14 @@ const router = createBrowserRouter(
     <Route
     path="/login"
     element={<Login/>}
+  />
+    <Route
+    path="/home"
+    element={<Home/>}
+  />
+    <Route
+    path="/pactic"
+    element={<Pactic/>}
   />
    </Route>
 
