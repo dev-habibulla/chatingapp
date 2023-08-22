@@ -138,3 +138,78 @@
   background: none !important; */
 
 }
+
+
+
+/* test   */
+
+.inputcssstyle {
+  width: 51%;
+  margin: 15px 0 !important;
+}
+
+.loginsbtn {
+  width: 50%;
+  font-family: var(--secondary-font-text) !important;
+  font-size: 21px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  padding: 15px 0 !important;
+  border-radius: 50px !important;
+  margin-top: 20px !important;
+  margin-bottom: 35px !important;
+}
+
+.card{
+  margin-top: 100px;
+  margin-bottom: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.template{
+  width: 336px;
+  height: 192px;
+  background-color: #dbd8d8;
+  background-image: url(./assets/cardbg.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.content{
+  width: 55%;
+}
+
+.name{
+  margin-top: 40px;
+  margin-left: 60px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.phone{
+  margin-top: 38px;
+  margin-left: 60px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.email{
+  margin-top: 13px;
+  margin-left: 60px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.adress{
+  margin-top: 13px;
+  margin-left: 60px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import bg from "../assets/registration.png";
 import Image from "./../components/Image";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import Alert from '@mui/material/Alert';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Registation = () => {
 
   const auth = getAuth();
+  let navigate = useNavigate()
 
   let [fromData, setFromData] = useState({
     fullName: "",
@@ -91,13 +92,27 @@ const Registation = () => {
               })
               setLoad(false)
               toast("Registration Successful please verify your email")
-              console.log("Registration done");
+              setTimeout(() => {
+                navigate("/login")
+              }, 1000);
             });
 
         }).catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
+          if (errorCode.includes("email")) {
+
+            toast.error('Email already exists!', {
+              position: "bottom-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          };
           setLoad(false)
         });
 
