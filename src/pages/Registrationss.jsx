@@ -56,7 +56,6 @@ const Registration = () => {
       setPasswordError("Password Required");
     }
 
-
     if (fromData.fullName && fromData.email && fromData.password) {
 
       let pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -108,8 +107,6 @@ const Registration = () => {
              {passwordError && <Alert variant="filled" severity="error"> {passwordError} </Alert>}
 
           </div>
-
-         
 
           <Button onClick={handleRegistrastion} className="regbtn" variant="contained" > Sign up </Button>
 

@@ -91,7 +91,16 @@ const Registation = () => {
                 password: "",
               })
               setLoad(false)
-              toast("Registration Successful please verify your email")
+              toast.success('Registration Successful please verify your email', {
+                position: "bottom-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
               setTimeout(() => {
                 navigate("/login")
               }, 1000);
@@ -104,7 +113,7 @@ const Registation = () => {
 
             toast.error('Email already exists!', {
               position: "bottom-center",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -163,7 +172,6 @@ const Registation = () => {
             :
             <Button onClick={handleRegistrastion} className="regbtn" variant="contained" > Sign up </Button>
           }
-
 
           <p> Alredy have an account ? <Link to="/login" className="focus"> Sign in </Link> </p>
         </div>

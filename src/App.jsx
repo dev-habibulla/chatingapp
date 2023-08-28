@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import { ToastContainer, toast } from 'react-toastify';
 import Pactic from './pages/pactic';
 import Home from './pages/Home';
+import ForgotPassword from './pages/ForgotPassword';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,11 @@ const router = createBrowserRouter(
     element={<Home/>}
     
   />
+    <Route
+    path="/forgotpassword"
+    element={<ForgotPassword/>}
+    
+  />
    </Route>
 
   )
@@ -45,7 +51,7 @@ function App() {
     <>
      
     <RouterProvider router={router} />
-    <ToastContainer
+    {/* <ToastContainer
 position="bottom-center"
 autoClose={5000}
 hideProgressBar={false}
@@ -56,7 +62,7 @@ pauseOnFocusLoss
 draggable
 pauseOnHover
 theme="dark"
-/>
+/> */}
 
     
     </>

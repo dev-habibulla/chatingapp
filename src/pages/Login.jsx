@@ -3,9 +3,16 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import bg from "../assets/login.png";
 import googleLogin from "../assets/google_login.png";
+import fbLogin from "../assets/fb_login.png";
 import Image from "./../components/Image";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  FacebookAuthProvider ,
+} from "firebase/auth";
 import Alert from "@mui/material/Alert";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { RotatingLines } from "react-loader-spinner";
@@ -14,6 +21,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const auth = getAuth();
+  // const provider = new GoogleAuthProvider();
+  const provider = new FacebookAuthProvider();
+
   let navigate = useNavigate();
   let [emailError, setEmailError] = useState("");
   let [passwordError, setPasswordError] = useState("");
@@ -42,6 +52,66 @@ const Login = () => {
     //   setPasswordError("")
     // }
   };
+
+
+  let handlefbLogin =()=>{
+
+    signInWithPopup(auth, provider)
+    .then((result) => {
+      // The signed-in user info.
+      const user = result.user;
+  
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+  
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode)
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = FacebookAuthProvider.credentialFromError(error);
+  
+      // ...
+    });
+
+
+
+  }
+
+
+
+  // let handleGoogleLogin =()=>{
+
+  // signInWithPopup(auth, provider)
+  // .then((result) => {
+  //   setTimeout(() => {
+  //     navigate("/home");
+  //   }, 1000);
+  //   const credential = GoogleAuthProvider.credentialFromResult(result);
+  //   const token = credential.accessToken;
+  //   // The signed-in user info.
+  //   const user = result.user;
+  //   // IdP data available using getAdditionalUserInfo(result)
+  //   // ...
+  // }).catch((error) => {
+  //   // Handle Errors here.
+  //   const errorCode = error.code;
+  //   const errorMessage = error.message;
+  //   // The email of the user's account used.
+  //   const email = error.customData.email;
+  //   // The AuthCredential type that was used.
+  //   const credential = GoogleAuthProvider.credentialFromError(error);
+  //   // ...
+  // });
+
+  // }
 
   let handleLogin = () => {
     setLoad(true);
@@ -123,9 +193,12 @@ const Login = () => {
       <div className="left">
         <div className="text_container">
           <h2>Login to your account!</h2>
-          <Link to="/">
+          {/* <Button onClick={handleGoogleLogin}>
             <Image src={googleLogin} className="googleLogin" />
-          </Link>
+          </Button> */}
+          <Button onClick={handlefbLogin}>
+            <Image src={fbLogin} className="fbLogin" />
+          </Button>
 
           <TextField
             onChange={handleChange}
@@ -191,6 +264,12 @@ const Login = () => {
             Don’t have an account ?{" "}
             <Link to="/" className="focus">
               Sign up
+            </Link>
+          </p>
+          <p>
+            Forget Password{" "}
+            <Link to="/forgotpassword" className="focus">
+              Click here
             </Link>
           </p>
         </div>
