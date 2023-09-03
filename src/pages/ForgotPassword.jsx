@@ -15,15 +15,17 @@ const ForgotPassword = () => {
     sendPasswordResetEmail(auth, email)
     .then(() => {
    
+      console.log("Password reset email sent successful");
       toast("Password reset email sent successful");
       setTimeout(() => {
         navigate("/login")
-      }, 1000);
+      }, 2000);
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       if (errorCode.includes("user-not-found")) {
+        console.log("Email Not Found");
         toast.error("Email Not Found", {
           position: "bottom-center",
           autoClose: 1000,

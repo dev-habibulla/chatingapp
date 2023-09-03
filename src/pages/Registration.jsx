@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import bg from "../assets/registration.png";
@@ -10,6 +10,7 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { RotatingLines } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 
 
@@ -30,6 +31,13 @@ const Registation = () => {
   let [open, setOpen] = useState(false);
   let [load, setLoad] = useState(false);
 
+  let data = useSelector((stade) => stade.logedUser.value);
+
+  useEffect(() => {
+    if (data) {
+      navigate("/home");
+    }
+  }, []);
 
   let handleChange = (e) => {
     setFromData({

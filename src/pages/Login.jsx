@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import bg from "../assets/login.png";
@@ -11,13 +11,15 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  FacebookAuthProvider ,
+  FacebookAuthProvider,
 } from "firebase/auth";
 import Alert from "@mui/material/Alert";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { RotatingLines } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { logedUser } from "../slices/counterSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const auth = getAuth();
@@ -25,10 +27,19 @@ const Login = () => {
   const provider = new FacebookAuthProvider();
 
   let navigate = useNavigate();
+  let dispatch = useDispatch();
   let [emailError, setEmailError] = useState("");
   let [passwordError, setPasswordError] = useState("");
   let [open, setOpen] = useState(false);
   let [load, setLoad] = useState(false);
+
+  let data = useSelector((stade) => stade.logedUser.value);
+
+  useEffect(() => {
+    if (data) {
+      navigate("/home");
+    }
+  }, []);
 
   let [fromData, setFromData] = useState({
     email: "",
@@ -53,39 +64,32 @@ const Login = () => {
     // }
   };
 
-
-  let handlefbLogin =()=>{
-
+  let handlefbLogin = () => {
     signInWithPopup(auth, provider)
-    .then((result) => {
-      // The signed-in user info.
-      const user = result.user;
-  
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      const credential = FacebookAuthProvider.credentialFromResult(result);
-      const accessToken = credential.accessToken;
-  
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode)
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = FacebookAuthProvider.credentialFromError(error);
-  
-      // ...
-    });
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
 
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
 
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
 
-  }
-
-
+        // ...
+      });
+  };
 
   // let handleGoogleLogin =()=>{
 
@@ -139,6 +143,8 @@ const Login = () => {
             toast("Login Successful");
             setTimeout(() => {
               navigate("/home");
+              dispatch(logedUser(user.user))
+              localStorage.setItem("user", JSON.stringify(user.user))
             }, 1000);
           } else {
             toast.error("Please Verify Your Email", {
