@@ -14,6 +14,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Message from "./pages/Message";
 import Notifications from "./pages/Notifications";
 import RootLayout from "./components/RootLayout";
+import Setting from './pages/Setting';
+import Friends from "./components/Friends";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +29,8 @@ const router = createBrowserRouter(
         <Route path="/home" element={<Home />} />
         <Route path="/message" element={<Message />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/setting" element={<Setting />} />
+        <Route path="/ctc" element={<Friends />} />
       </Route>
       
     </Route>

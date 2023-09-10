@@ -13,6 +13,15 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
 } from "firebase/auth";
+import {
+  getDatabase,
+  ref,
+  set,
+  push,
+  onValue,
+  child,
+  get,
+} from "firebase/database";
 import Alert from "@mui/material/Alert";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { RotatingLines } from "react-loader-spinner";
@@ -23,8 +32,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const auth = getAuth();
-  // const provider = new GoogleAuthProvider();
-  const provider = new FacebookAuthProvider();
+  const db = getDatabase();
+  const dbRef = ref(getDatabase());
+  const provider = new GoogleAuthProvider();
+  // const provider = new FacebookAuthProvider();
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -32,6 +43,8 @@ const Login = () => {
   let [passwordError, setPasswordError] = useState("");
   let [open, setOpen] = useState(false);
   let [load, setLoad] = useState(false);
+  // let [taskArr, setTaskArr] = useState([])
+  let taskArr = [];
 
   let data = useSelector((stade) => stade.logedUser.value);
 
@@ -64,58 +77,114 @@ const Login = () => {
     // }
   };
 
-  let handlefbLogin = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info.
-        const user = result.user;
+  // let handlefbLogin = () => {
+  //   signInWithPopup(auth, provider)
+  //     .then((result) => {
+  //       // The signed-in user info.
+  //       const user = result.user;
 
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
+  //       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+  //       const credential = FacebookAuthProvider.credentialFromResult(result);
+  //       const accessToken = credential.accessToken;
 
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = FacebookAuthProvider.credentialFromError(error);
+  //       // IdP data available using getAdditionalUserInfo(result)
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       // Handle Errors here.
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode);
+  //       // The email of the user's account used.
+  //       const email = error.customData.email;
+  //       // The AuthCredential type that was used.
+  //       const credential = FacebookAuthProvider.credentialFromError(error);
 
-        // ...
+  //       // ...
+  //     });
+  // };
+
+  let handleGoogleLogin = () => {
+    signInWithPopup(auth, provider).then((user) => {
+      let userEmail = user.user.email;
+      const usersRef = ref(db, "users");
+      onValue(usersRef, (snapshot) => {
+        snapshot.forEach((item) => {
+          const userData = item.val();
+          taskArr.push(userData.email);
+        });
       });
+
+      JSON.stringify(taskArr);
+
+      setTimeout(() => {
+        navigate("/home");
+        dispatch(logedUser(user.user));
+        localStorage.setItem("user", JSON.stringify(user.user));
+      }, 1000);
+
+      if (taskArr.includes(userEmail)) {
+        toast("Welcome back! You have successfully logged in");
+      } else {
+        set(push(ref(db, "users")), {
+          username: user.user.displayName,
+          email: user.user.email,
+          profile_picture: user.user.photoURL,
+        });
+        toast(
+          "Congratulations! You've Successfully Completed the Registration and Login Processes"
+        )
+
+      }
+
+      // console.log(user.user.email);
+
+      // const dbRef = ref(getDatabase());
+      // get(child(dbRef, "users"))
+      //   .then((snapshot) => {
+      //     if (snapshot.exists()) {
+      //       console.log(snapshot.val(user.email));
+      //     } else {
+      //       console.log("No data available");
+      //     }
+      //   })
+
+      // set(push(ref(db, "users")), {
+      //   username: user.user.displayName,
+      //   email: user.user.email,
+      //   profile_picture: user.user.photoURL,
+      // });
+
+      // const usersRef = ref(db, "users");
+      // onValue(usersRef, (snapshot) => {
+      //   snapshot.forEach((item) => {
+      //     const userData = item.val();
+      //     taskArr.push(userData.email);
+      //     console.log(userData.email);
+
+      //     if (userData.email === user.user.email) {
+      //       toast("Welcome back! You have successfully logged in");
+      //     } else {
+      //       toast(
+      //         "Congratulations! You've Successfully Completed the Registration and Login Processes"
+      //       );
+      //       console.log("nai");
+      //       set(push(ref(db, "users")), {
+      //         username: user.user.displayName,
+      //         email: user.user.email,
+      //         profile_picture: user.user.photoURL,
+      //       });
+      //     }
+      //     // console.log(user.user.email);
+
+      //     // Log each email inside the loop
+      //   });
+      //   // if (taskArr.includes(userData.email)) {
+      //   //  console.log("asa");
+      //   // }
+      // });
+    });
   };
-
-  // let handleGoogleLogin =()=>{
-
-  // signInWithPopup(auth, provider)
-  // .then((result) => {
-  //   setTimeout(() => {
-  //     navigate("/home");
-  //   }, 1000);
-  //   const credential = GoogleAuthProvider.credentialFromResult(result);
-  //   const token = credential.accessToken;
-  //   // The signed-in user info.
-  //   const user = result.user;
-  //   // IdP data available using getAdditionalUserInfo(result)
-  //   // ...
-  // }).catch((error) => {
-  //   // Handle Errors here.
-  //   const errorCode = error.code;
-  //   const errorMessage = error.message;
-  //   // The email of the user's account used.
-  //   const email = error.customData.email;
-  //   // The AuthCredential type that was used.
-  //   const credential = GoogleAuthProvider.credentialFromError(error);
-  //   // ...
-  // });
-
-  // }
 
   let handleLogin = () => {
     setLoad(true);
@@ -139,26 +208,26 @@ const Login = () => {
       signInWithEmailAndPassword(auth, fromData.email, fromData.password)
         .then((user) => {
           // console.log(user.user.emailVerified);
-          if (user.user.emailVerified) {
-            toast("Login Successful");
-            setTimeout(() => {
-              navigate("/home");
-              dispatch(logedUser(user.user))
-              localStorage.setItem("user", JSON.stringify(user.user))
-            }, 1000);
-          } else {
-            toast.error("Please Verify Your Email", {
-              position: "bottom-center",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            });
-            setLoad(false);
-          }
+          // if (user.user.emailVerified) {
+          toast("Login Successful");
+          setTimeout(() => {
+            navigate("/home");
+            dispatch(logedUser(user.user));
+            localStorage.setItem("user", JSON.stringify(user.user));
+          }, 1000);
+          // } else {
+          //   toast.error("Please Verify Your Email", {
+          //     position: "bottom-center",
+          //     autoClose: 2000,
+          //     hideProgressBar: false,
+          //     closeOnClick: true,
+          //     pauseOnHover: true,
+          //     draggable: true,
+          //     progress: undefined,
+          //     theme: "dark",
+          //   });
+          //   setLoad(false);
+          // }
           setLoad(false);
         })
         .catch((error) => {
@@ -199,12 +268,12 @@ const Login = () => {
       <div className="left">
         <div className="text_container">
           <h2>Login to your account!</h2>
-          {/* <Button onClick={handleGoogleLogin}>
+          <Button onClick={handleGoogleLogin}>
             <Image src={googleLogin} className="googleLogin" />
-          </Button> */}
-          <Button onClick={handlefbLogin}>
-            <Image src={fbLogin} className="fbLogin" />
           </Button>
+          {/* <Button onClick={handlefbLogin}>
+            <Image src={fbLogin} className="fbLogin" />
+          </Button> */}
 
           <TextField
             onChange={handleChange}

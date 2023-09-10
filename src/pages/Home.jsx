@@ -6,6 +6,15 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { logedUser } from "../slices/counterSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Grid from "@mui/material/Grid";
+import GroupList from "../components/GroupList";
+import Friends from './../components/Friends';
+import UserList from './../components/UserList';
+import FriendRequest from "../components/FriendRequest";
+import MyGroups from './../components/MyGroups';
+import BlockedUsers from './../components/BlockedUsers';
+
+
 
 const Home = () => {
   const auth = getAuth();
@@ -32,8 +41,8 @@ const Home = () => {
         theme: "light",
       });
       setTimeout(() => {
-        dispatch(logedUser(null))
-        localStorage.removeItem("user")
+        dispatch(logedUser(null));
+        localStorage.removeItem("user");
         navigate("/login");
       }, 1000);
     });
@@ -41,8 +50,28 @@ const Home = () => {
 
   return (
     <div>
+    <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <GroupList/>
+        </Grid>
+        <Grid item xs={4}>
+        <Friends/>
+        </Grid>
+        <Grid item xs={4}>
+        <UserList/>
+        </Grid>
+        <Grid item xs={4}>
+        <FriendRequest/>
+        </Grid>
+        <Grid item xs={4}>
+        <MyGroups/>
+        </Grid>
+        <Grid item xs={4}>
+        <BlockedUsers/>
+        </Grid>
+      </Grid>
       <Button onClick={handleLogOut} variant="contained">
-        Logout{" "}
+        Logout
       </Button>
     </div>
   );
