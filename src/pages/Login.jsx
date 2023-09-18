@@ -126,7 +126,7 @@ const Login = () => {
       if (taskArr.includes(userEmail)) {
         toast("Welcome back! You have successfully logged in");
       } else {
-        set(push(ref(db, "users")), {
+        set(ref(db, "users/" + user.user.uid), {
           username: user.user.displayName,
           email: user.user.email,
           profile_picture: user.user.photoURL,

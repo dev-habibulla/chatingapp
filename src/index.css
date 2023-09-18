@@ -279,8 +279,10 @@
 }
 
 .listbtn {
+  
   right: 0;
   position: absolute !important;
   background: #5F35F5 !important;
-  justify-content: end !important;
+  justify-content: center !important;
+  
 }

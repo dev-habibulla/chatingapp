@@ -94,7 +94,7 @@ const Registation = () => {
       }
       setLoad(true);
       createUserWithEmailAndPassword(auth, fromData.email, fromData.password)
-        .then(() => {
+        .then((user) => {
           updateProfile(auth.currentUser, {
             displayName: fromData.fullName,
             photoURL:
@@ -126,7 +126,7 @@ const Registation = () => {
                 }, 1000);
               })
               .then(() => {
-                set(push(ref(db, "users")), {
+                set(ref(db, "users/" + user.user.uid), {
                   username: fromData.fullName,
                   email: fromData.email,
                   profile_picture:
