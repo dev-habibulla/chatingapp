@@ -12,66 +12,7 @@ const GroupList = () => {
         <h4>Friends Reunion</h4>
         <Button className="listbtn" variant="contained">Join</Button>
       </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
-      <div className="list">
-        <Image src={gimg} />
-        <h4>Friends Reunion</h4>
-        <Button className="listbtn" variant="contained">Join</Button>
-      </div>
+    
     </div>
   );
 };

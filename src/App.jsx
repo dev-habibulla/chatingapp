@@ -8,7 +8,7 @@ import {
 import Registation from "./pages/Registration";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
-import Pactic from "./pages/pactic";
+
 import Home from "./pages/Home";
 import ForgotPassword from "./pages/ForgotPassword";
 import Message from "./pages/Message";
@@ -16,6 +16,7 @@ import Notifications from "./pages/Notifications";
 import RootLayout from "./components/RootLayout";
 import Setting from './pages/Setting';
 import Friends from "./components/Friends";
+import TestAllRegList from './components/TestAllRegList';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +26,7 @@ const router = createBrowserRouter(
       <Route path="/forgotpassword" element={<ForgotPassword />} />
 
       <Route path="/" element={<RootLayout />}>
-        <Route path="/pactic" element={<Pactic />} />
+        <Route path="/pactic" element={<TestAllRegList />} />
         <Route path="/home" element={<Home />} />
         <Route path="/message" element={<Message />} />
         <Route path="/notifications" element={<Notifications />} />

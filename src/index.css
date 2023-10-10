@@ -279,10 +279,105 @@
 }
 
 .listbtn {
-  
+
   right: 0;
   position: absolute !important;
   background: #5F35F5 !important;
-  justify-content: center !important;
+  text-transform: capitalize !important;
+
+}
+.frlistbtn {
+
+  right: 0;
+  position: absolute !important;
+  background: #a51d2f !important;
+  text-transform: capitalize !important;
+
+}
+.frlistbtn  p{
+
+  right: 0;
+  padding: 15px 0 !important;
+  text-transform: capitalize !important;
+  position: absolute !important;
+  background: rgb(185, 31, 31) !important;
+  font-size: 10px !important;
+  line-height: 0 !important;
+
+}
+
+.listbtn p{
+
+  right: 0;
+  padding: 15px 0 !important;
+  text-transform: capitalize !important;
+  position: absolute !important;
+  background: rgb(185, 31, 31) !important;
+  font-size: 10px !important;
+  line-height: 0 !important;
+
+}
+
+.reqbtn{
+  width: 22%;
+  /* position: absolute; */
+  display: flex;
+  flex-direction: column;
   
+}
+
+.reqName{
+  width: 55%;
+}
+
+.reqlistbtn {
+  /* display: inline-block !important;
+  left: 130px !important; */
+  text-transform: capitalize !important;
+  margin: 5px !important;
+  background: green !important;
+  font-size: 10px !important;
+  justify-content: center !important;
+
+}
+
+.reqlistDelbtn {
+  /* display: inline-block !important;
+  left: 130px !important; */
+  text-transform: capitalize !important;
+  margin: 5px !important;
+  background: rgb(185, 31, 31) !important;
+  font-size: 10px !important;
+  justify-content: center !important;
+
+}
+
+.listbtnicon {
+
+  font-size: 16px;
+
+}
+
+.reqlist {
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  /* column-gap: 15px; */
+  border-bottom: 2px solid #000;
+  padding-bottom: 10px;
+  margin: 10px 0;
+}
+.req_profilepic{
+  width: 23%;
+}
+.reqlist .profilepic {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.reqlist:last-child {
+  border-bottom: 0;
+
 }
