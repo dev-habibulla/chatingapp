@@ -16,19 +16,25 @@ const Friends = () => {
   let userInfo = useSelector((state) => state.logedUser.value);
   let [frList, setFRList] = useState([]);
 
+
   useEffect(() => {
     const friendstRef = ref(db, "friends");
     onValue(friendstRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((iteam) => {
-        arr.push({ ...iteam.val(), fid: iteam.key });
+        if (
+          iteam.val().whoSenderID == userInfo.uid ||
+          iteam.val().whoReceverID == userInfo.uid
+        ) {
+          arr.push({ ...iteam.val(), fid: iteam.key });
+        }
+       
       });
       setFRList(arr);
     });
   }, []);
 
   let handleBlock = (iteam) => {
-
     if (userInfo.uid == iteam.whoSenderID) {
       set(push(ref(db, "block")), {
         blockId: iteam.whoReceverID,

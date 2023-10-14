@@ -41,30 +41,14 @@ const UserList = () => {
     });
   }, []);
 
-  let handleFriendRequest = (info) => {
-    // console.log("info",userInfo.uid,userInfo.displayName);
-
-    // setReqBtnLoad(true);
-
-    set(push(ref(db, "friendRequest")), {
-      whoSenderName: userInfo.displayName,
-      whoSenderID: userInfo.uid,
-      whoSenderPicture: userInfo.photoURL,
-      whoReceverName: info.username,
-      whoReceverID: info.userId,
-      whoReceverPicture: info.profile_picture,
-    }).then(() => {
-      setReqBtnLoad(false);
-    });
-  };
-
   useEffect(() => {
     const friendRequestRef = ref(db, "friendRequest");
     onValue(friendRequestRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((iteam) => {
-        arr.push(iteam.val().whoReceverID + iteam.val().whoSenderID);
-        // arr.push({frid: iteam.key})
+    
+         arr.push(iteam.val().whoReceverID + iteam.val().whoSenderID);
+       
       });
       setReqList(arr);
     });
@@ -88,16 +72,33 @@ const UserList = () => {
       let arr = [];
       snapshot.forEach((iteam) => {
         arr.push(iteam.val().blockId + iteam.val().whoBlockerById);
-        // arr.push({frid: iteam.key})
-        console.log(iteam);
+
       });
       setBlockList(arr);
     });
   }, []);
 
+  let handleFriendRequest = (info) => {
+    // console.log("info",userInfo.uid,userInfo.displayName);
+
+    // setReqBtnLoad(true);
+
+    set(push(ref(db, "friendRequest")), {
+      whoSenderName: userInfo.displayName,
+      whoSenderID: userInfo.uid,
+      whoSenderPicture: userInfo.photoURL,
+      whoReceverName: info.username,
+      whoReceverID: info.userId,
+      whoReceverPicture: info.profile_picture,
+    }).then(() => {
+      setReqBtnLoad(false);
+    });
+  };
+
+
   let handleReqDelete = (iteam) => {
     // console.log(iteam.frid);
-    console.log(iteam);
+    console.log(iteam.id);
 
     // remove(ref(db, "friendrequest/" + item.id));
     //     remove(ref(db, 'friendRequest/' + iteam.frid))

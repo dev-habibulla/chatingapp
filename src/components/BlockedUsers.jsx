@@ -28,7 +28,7 @@ const BlockedUsers = () => {
     });
   }, []);
 
-  let handleUnblock =(iteam)=>{
+  let handleUnblock = (iteam) => {
     set(push(ref(db, "friends/")), {
       whoSenderName: iteam.whoBlockedByName,
       whoSenderID: iteam.whoBlockerById,
@@ -37,15 +37,12 @@ const BlockedUsers = () => {
       whoReceverID: iteam.blockId,
       whoReceverPicture: iteam.blockPic,
     }).then(() => {
-     
       remove(ref(db, "block/" + iteam.bid));
     });
-
-  }
-
-
-
-
+  };
+  let handleUnblockUser = (iteam) => {
+    remove(ref(db, "block/" + iteam.bid));
+  };
 
   return (
     <div className="box">
@@ -55,9 +52,22 @@ const BlockedUsers = () => {
           <div className="list">
             <Image src={iteam.whoBlockedBypic} className="profilepic" />
             <h4>{iteam.whoBlockedByName}</h4>
-            <Button onClick={()=>handleUnblock(iteam)} className="listbtn" variant="contained">
-              Unblock
-            </Button>
+            <div className="reqbtn">
+              <Button
+                onClick={() => handleUnblock(iteam)}
+                className="reqlistbtn"
+                variant="contained"
+              >
+                Unblock
+              </Button>
+              <Button
+                onClick={() => handleUnblockUser(iteam)}
+                className="reqlistDelbtn"
+                variant="contained"
+              >
+               Unblock2
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="list">
