@@ -23,7 +23,7 @@ const UserList = () => {
   let [reqList, setReqList] = useState([]);
   let [friendList, setFriendList] = useState([]);
   let [blockList, setBlockList] = useState([]);
-  let [reqDel, setReqDel] = useState([]);
+  let [fRQcancel, setFRQcancel] = useState("");
 
   let userInfo = useSelector((state) => state.logedUser.value);
 
@@ -46,9 +46,7 @@ const UserList = () => {
     onValue(friendRequestRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((iteam) => {
-    
-         arr.push(iteam.val().whoReceverID + iteam.val().whoSenderID);
-       
+        arr.push(iteam.val().whoReceverID + iteam.val().whoSenderID);
       });
       setReqList(arr);
     });
@@ -72,7 +70,6 @@ const UserList = () => {
       let arr = [];
       snapshot.forEach((iteam) => {
         arr.push(iteam.val().blockId + iteam.val().whoBlockerById);
-
       });
       setBlockList(arr);
     });
@@ -95,14 +92,18 @@ const UserList = () => {
     });
   };
 
-
-  let handleReqDelete = (iteam) => {
-    // console.log(iteam.frid);
-    console.log(iteam.id);
-
-    // remove(ref(db, "friendrequest/" + item.id));
-    //     remove(ref(db, 'friendRequest/' + iteam.frid))
+  let handleReqCancle = (item) => {
+    const groupRequestRef = ref(db, "friendRequest");
+    let frRQId = "";
+    onValue(groupRequestRef, (snapshot) => {
+      snapshot.forEach((fRQitem) => {
+        frRQId = fRQitem.key;
+      });
+      setFRQcancel(frRQId); 
+    });
+    remove(ref(db, "friendRequest/" + fRQcancel));
   };
+
 
   return (
     <div className="box">
@@ -117,11 +118,10 @@ const UserList = () => {
 
           {reqList.includes(iteam.userId + userInfo.uid) ? (
             <Button
-              onClick={() => handleReqDelete(iteam)}
+              onClick={() => handleReqCancle(iteam)}
               className="reqlistDelbtn"
               variant="contained"
             >
-              {" "}
               Cancel
             </Button>
           ) : reqList.includes(userInfo.uid + iteam.userId) ? (
@@ -135,12 +135,11 @@ const UserList = () => {
               Friend
             </Button>
           ) : blockList.includes(iteam.userId + userInfo.uid) ||
-          blockList.includes(userInfo.uid + iteam.userId) ? (
-          <Button className="listbtn" variant="contained">
-            Block
-          </Button>)
-          
-          : (
+            blockList.includes(userInfo.uid + iteam.userId) ? (
+            <Button className="listbtn" variant="contained">
+              Block
+            </Button>
+          ) : (
             <Button
               onClick={() => handleFriendRequest(iteam)}
               className="listbtn"

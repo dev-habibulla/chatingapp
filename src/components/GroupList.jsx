@@ -107,17 +107,13 @@ const GroupList = () => {
   let handleGReqCancel = (item) => {
     const groupRequestRef = ref(db, "groupRequest");
     let groupRQId = "";
-    
     onValue(groupRequestRef, (snapshot) => {
       snapshot.forEach((giteam) => {
         groupRQId = giteam.key; 
       });
-      
       setGroupReqSendId(groupRQId);
-    
       console.log("groupRequestgroupRequest", groupRQId);
     });
-    
     remove(ref(db, "groupRequest/" + groupReqSendId));
   };
   return (
@@ -138,7 +134,7 @@ const GroupList = () => {
               variant="contained"
             >
               {" "}
-              pending
+              Cancel
             </Button>
           ) : groupMemberList.includes(userInfo.uid + iteam.groupId) ? (
             <Button className="reqlistbtn" variant="contained">
@@ -202,3 +198,8 @@ const GroupList = () => {
 };
 
 export default GroupList;
+
+
+
+
+
