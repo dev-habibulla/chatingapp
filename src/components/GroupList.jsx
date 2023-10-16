@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import gimg from "../assets/gimg.png";
+import gimg from "../assets/grimg.png";
 import Image from "./Image";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -37,6 +37,7 @@ const GroupList = () => {
 
   let [gName, setGname] = useState("");
   let [gTag, setGtag] = useState("");
+  let [groupPic, setGroupPic] = useState("");
   let [groupList, setGroupList] = useState([]);
   let [gReqList, setGReqList] = useState([]);
   let [groupMemberList, setGroupMemberList] = useState([]);
@@ -46,6 +47,7 @@ const GroupList = () => {
     set(push(ref(db, "group")), {
       groupName: gName,
       groupTag: gTag,
+      groupPic: groupPic,
       adminUid: userInfo.uid,
       adminName: userInfo.displayName,
     }).then(() => {
@@ -119,31 +121,32 @@ const GroupList = () => {
   return (
     <div className="box">
       <h3>Groups List</h3>
-      <Button onClick={handleOpen} variant="contained">
+      <Button className="grCreatebtn" onClick={handleOpen} variant="contained">
         Create Group
       </Button>
       {groupList.map((iteam) => (
         <div className="list">
-          <Image src={gimg} />
+          <Image src={gimg} className="req_profilepic"/>
           <h4>{iteam.groupName}</h4>
           {/* { (iteam.whoSenderID + userInfo.uid) || (userInfo.uid + iteam.whoSenderID)} */}
           {gReqList.includes(userInfo.uid + iteam.groupId) ? (
+            
             <Button
               onClick={() => handleGReqCancel(iteam)}
-              className="reqlistDelbtn"
+              className="frlistbtn"
               variant="contained"
             >
               {" "}
               Cancel
             </Button>
           ) : groupMemberList.includes(userInfo.uid + iteam.groupId) ? (
-            <Button className="reqlistbtn" variant="contained">
+            <Button className="joinedbtn" variant="contained">
               Joined
             </Button>
           ) : (
             <Button
               onClick={() => handleGroupReqSend(iteam)}
-              className="listbtn"
+              className="reqGRSendbtn"
               variant="contained"
             >
               Join

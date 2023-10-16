@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import gimg from "../assets/gimg.png";
+import gimg from "../assets/grimg.png";
 import Image from "./Image";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,35 +103,6 @@ const MyGroups = () => {
     });
   }, []);
 
-  //   useEffect(() => {
-  //     const groupsMemberRef = ref(db, "groupsMember");
-  //     onValue(groupsMemberRef, (snapshot) => {
-  //       let arr = [];
-  //       snapshot.forEach((iteam) => {
-  // console.log("check",iteam.val().groupId);
-
-  //         if (iteam.val().adminUid == userInfo.uid )  {
-  //           // arr.push(iteam.val().whoReceverID + iteam.val().whoSenderID);
-  //           arr.push({ ...iteam.val(), groupMemberId: iteam.key });
-  //         }
-  //       });
-  //       setGroupMemberList(arr);
-  //       console.log("0000",arr);
-  //     });
-  //   }, []);
-
-  // useEffect(() => {
-  //   const groupRef = ref(db, "groupRequest");
-  //   onValue(groupRef, (snapshot) => {
-  //     let arr = [];
-  //     snapshot.forEach((giteam) => {
-  //       if (userInfo.uid == giteam.val().adminUid) {
-  //         arr.push({ ...giteam.val(), groupReqId: giteam.key });
-  //       }
-  //     });
-  //     setGroupReqList(arr);
-  //   });
-  // }, []);
 
   let handleGroupDel = (iteam) => {
     remove(ref(db, "group/" + iteam.groupId));
@@ -158,19 +129,19 @@ const MyGroups = () => {
       <h3>My Groups</h3>
       {groupList.map((iteam) => (
         <div className="list">
-          <Image src={gimg} />
+          <Image src={gimg} className="req_profilepic"/>
           <h4>{iteam.groupName}</h4>
-          <div className="reqbtn">
+          <div className="mygrBtnbox">
             <Button
               onClick={() => handleOpen(iteam)}
-              className="reqlistbtn"
+              className="reqAlistbtn"
               variant="contained"
             >
-              ReqList
+              request
             </Button>
             <Button
               onClick={() => handleMemberList(iteam)}
-              className="reqlistbtn"
+              className="reqAlistbtn"
               variant="contained"
             >
               Member
@@ -205,13 +176,13 @@ const MyGroups = () => {
                   {groupReqList.map((iteam) => (
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
+                      <Image
+                        src={iteam.whoSenderPicture}
+                        className="req_GR_profilepic"
+                      />
                       </ListItemAvatar>
 
-                      <ListItemText
+                      <ListItemText className="groupReq"
                         primary={iteam.whoSenderName}
                         secondary={
                           <React.Fragment>
@@ -227,7 +198,7 @@ const MyGroups = () => {
 
                             <Button
                               onClick={() => handleAccept(iteam)}
-                              className="reqlistbtn"
+                              className="reqAlistbtn"
                               variant="contained"
                             >
                               Accept

@@ -56,7 +56,7 @@ const FriendRequest = () => {
           <div className="reqbtn">
             <Button
               onClick={() => handleAccept(iteam)}
-              className="reqlistbtn"
+              className="reqAlistbtn"
               variant="contained"
             >
               Accept

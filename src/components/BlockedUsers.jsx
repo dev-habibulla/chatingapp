@@ -50,12 +50,12 @@ const BlockedUsers = () => {
       {blockList.map((iteam) =>
         iteam.whoBlockerById == userInfo.uid ? (
           <div className="list">
-            <Image src={iteam.whoBlockedBypic} className="profilepic" />
-            <h4>{iteam.whoBlockedByName}</h4>
-            <div className="reqbtn">
+            <Image src={iteam.blockPic} className="profilepic" />
+            <h4>{iteam.blockName}</h4>
+            <div className="mygrBtnbox">
               <Button
                 onClick={() => handleUnblock(iteam)}
-                className="reqlistbtn"
+                className="reqAlistbtn"
                 variant="contained"
               >
                 Unblock
@@ -69,11 +69,14 @@ const BlockedUsers = () => {
               </Button>
             </div>
           </div>
-        ) : (
+        ) :iteam.blockId == userInfo.uid?(
+          
           <div className="list">
-            <Image src={iteam.blockPic} className="profilepic" />
-            <h4>{iteam.blockName}</h4>
+            <Image src={iteam.whoBlockedBypic} className="profilepic" />
+            <h4>{iteam.whoBlockedByName}</h4>
           </div>
+        ):(
+          <h4></h4>
         )
       )}
     </div>

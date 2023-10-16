@@ -119,13 +119,13 @@ const UserList = () => {
           {reqList.includes(iteam.userId + userInfo.uid) ? (
             <Button
               onClick={() => handleReqCancle(iteam)}
-              className="reqlistDelbtn"
+              className="frlistbtn"
               variant="contained"
             >
               Cancel
             </Button>
           ) : reqList.includes(userInfo.uid + iteam.userId) ? (
-            <Button className="reqlistbtn" variant="contained">
+            <Button className="frlistbtn" variant="contained">
               {" "}
               pending{" "}
             </Button>
@@ -136,16 +136,17 @@ const UserList = () => {
             </Button>
           ) : blockList.includes(iteam.userId + userInfo.uid) ||
             blockList.includes(userInfo.uid + iteam.userId) ? (
-            <Button className="listbtn" variant="contained">
+            <Button className="frlistbtn" variant="contained">
               Block
             </Button>
           ) : (
             <Button
               onClick={() => handleFriendRequest(iteam)}
-              className="listbtn"
+              className="addFrbtn"
               variant="contained"
             >
-              <FaUserPlus className="listbtnicon" />
+              add friend
+              {/* <FaUserPlus className="listbtnicon" /> */}
             </Button>
           )}
           {/* {reqBtnLoad ? (
