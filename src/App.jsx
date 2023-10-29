@@ -8,7 +8,6 @@ import {
 import Registation from "./pages/Registration";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
-
 import Home from "./pages/Home";
 import ForgotPassword from "./pages/ForgotPassword";
 import Message from "./pages/Message";

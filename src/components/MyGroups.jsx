@@ -148,7 +148,7 @@ const MyGroups = () => {
             </Button>
             <Button
               onClick={() => handleGroupDel(iteam)}
-              className="reqlistDelbtn"
+              className="greqlistDelbtn"
               variant="contained"
             >
               Delete

@@ -45,12 +45,16 @@ const UserList = () => {
     const friendRequestRef = ref(db, "friendRequest");
     onValue(friendRequestRef, (snapshot) => {
       let arr = [];
+
       snapshot.forEach((iteam) => {
         arr.push(iteam.val().whoReceverID + iteam.val().whoSenderID);
+      
       });
+
       setReqList(arr);
     });
   }, []);
+
 
   useEffect(() => {
     const friendRef = ref(db, "friends");
@@ -93,17 +97,21 @@ const UserList = () => {
   };
 
   let handleReqCancle = (item) => {
-    const groupRequestRef = ref(db, "friendRequest");
-    let frRQId = "";
-    onValue(groupRequestRef, (snapshot) => {
+    const friendRequestRef = ref(db, "friendRequest");
+    onValue(friendRequestRef, (snapshot) => {
       snapshot.forEach((fRQitem) => {
-        frRQId = fRQitem.key;
+        if (
+          fRQitem.val().whoSenderID === userInfo.uid &&
+          fRQitem.val().whoReceverID === item.userId
+        ) {
+          
+          const frRQId = fRQitem.key;
+          remove(ref(db, "friendRequest/" + frRQId));
+        }
       });
-      setFRQcancel(frRQId); 
     });
-    remove(ref(db, "friendRequest/" + fRQcancel));
   };
-
+  
 
   return (
     <div className="box">
@@ -126,8 +134,7 @@ const UserList = () => {
             </Button>
           ) : reqList.includes(userInfo.uid + iteam.userId) ? (
             <Button className="frlistbtn" variant="contained">
-              {" "}
-              pending{" "}
+              pending
             </Button>
           ) : friendList.includes(iteam.userId + userInfo.uid) ||
             friendList.includes(userInfo.uid + iteam.userId) ? (
@@ -139,18 +146,8 @@ const UserList = () => {
             <Button className="frlistbtn" variant="contained">
               Block
             </Button>
-          ) : (
-            <Button
-              onClick={() => handleFriendRequest(iteam)}
-              className="addFrbtn"
-              variant="contained"
-            >
-              add friend
-              {/* <FaUserPlus className="listbtnicon" /> */}
-            </Button>
-          )}
-          {/* {reqBtnLoad ? (
-            <Button className="listbtn" variant="contained">
+          ) : reqBtnLoad ? (
+            <Button className="addFrbtn" variant="contained">
               <RotatingLines
                 strokeColor="white"
                 strokeWidth="3"
@@ -162,11 +159,32 @@ const UserList = () => {
           ) : (
             <Button
               onClick={() => handleFriendRequest(iteam)}
-              className="listbtn"
+              className="addFrbtn"
               variant="contained"
             >
+              add friend
+            </Button>
+          )}
+          {/* {reqBtnLoad ? (
+            <Button className="addFrbtn" variant="contained">
+              <RotatingLines
+                strokeColor="white"
+                strokeWidth="3"
+                animationDuration="0.75"
+                width="16"
+                visible={true}
+              />
+            </Button>
+          ) : (
+           <Button
+              onClick={() => handleFriendRequest(iteam)}
+              className="addFrbtn"
+              variant="contained"
+            >
+              add friend
               <FaUserPlus className="listbtnicon" />
             </Button>
+            
           )} */}
         </div>
       ))}

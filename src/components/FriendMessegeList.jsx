@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import gimg from "../assets/gimg.png";
 import Image from "./Image";
 import Button from "@mui/material/Button";
+import { activeChat } from "../slices/activeChatSlice";
 import {
   getDatabase,
   ref,
@@ -10,11 +10,12 @@ import {
   set,
   push,
 } from "firebase/database";
-import { useSelector } from "react-redux";
-const Friends = () => {
+import { useDispatch, useSelector } from "react-redux";
+const FriendMessegeList = () => {
   const db = getDatabase();
   let userInfo = useSelector((state) => state.logedUser.value);
   let [frList, setFRList] = useState([]);
+  let dispatch = useDispatch();
 
   useEffect(() => {
     const friendstRef = ref(db, "friends");
@@ -32,29 +33,25 @@ const Friends = () => {
     });
   }, []);
 
-  let handleBlock = (iteam) => {
+  let handleActiveChat = (iteam) => {
     if (userInfo.uid == iteam.whoSenderID) {
-      set(push(ref(db, "block")), {
-        blockId: iteam.whoReceverID,
-        blockName: iteam.whoReceverName,
-        blockPic: iteam.whoReceverPicture,
-        whoBlockerById: iteam.whoSenderID,
-        whoBlockedByName: iteam.whoSenderName,
-        whoBlockedBypic: iteam.whoSenderPicture,
-      }).then(() => {
-        remove(ref(db, "friends/" + iteam.fid));
-      });
+      dispatch(
+        activeChat({
+          type:"single",
+          activeUid: iteam.whoReceverID,
+          activeName: iteam.whoReceverName,
+          activePic: iteam.whoReceverPicture,
+        })
+      );
     } else {
-      set(push(ref(db, "block")), {
-        blockId: iteam.whoSenderID,
-        blockName: iteam.whoSenderName,
-        blockPic: iteam.whoSenderPicture,
-        whoBlockerById: iteam.whoReceverID,
-        whoBlockedByName: iteam.whoReceverName,
-        whoBlockedBypic: iteam.whoReceverPicture,
-      }).then(() => {
-        remove(ref(db, "friends/" + iteam.fid));
-      });
+      dispatch(
+        activeChat({
+          type:"single",
+          activeUid: iteam.whoSenderID,
+          activeName: iteam.whoSenderName,
+          activePic: iteam.whoSenderPicture,
+        })
+      );
     }
   };
 
@@ -62,7 +59,7 @@ const Friends = () => {
     <div className="box">
       <h3>Friends</h3>
       {frList.map((iteam, index) => (
-        <div className="list">
+        <div className="list" onClick={() => handleActiveChat(iteam)}>
           <Image
             src={
               iteam.whoSenderID == userInfo.uid
@@ -76,17 +73,10 @@ const Friends = () => {
               ? iteam.whoReceverName
               : iteam.whoSenderName}
           </h4>
-          <Button
-            onClick={() => handleBlock(iteam)}
-            className="frlistbtn"
-            variant="contained"
-          >
-            Block
-          </Button>
         </div>
       ))}
     </div>
   );
 };
 
-export default Friends;
+export default FriendMessegeList;

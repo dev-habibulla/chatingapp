@@ -41,7 +41,6 @@ const GroupList = () => {
   let [groupList, setGroupList] = useState([]);
   let [gReqList, setGReqList] = useState([]);
   let [groupMemberList, setGroupMemberList] = useState([]);
-  let [groupReqSendId, setGroupReqSendId] = useState("");
 
   let handleGroupCreate = () => {
     set(push(ref(db, "group")), {
@@ -73,11 +72,14 @@ const GroupList = () => {
     onValue(groupRequestRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((iteam) => {
-        arr.push(iteam.val().whoSenderID + iteam.val().groupId);
+        if (iteam.val().whoSenderID == userInfo.uid) {
+          arr.push(iteam.val().whoSenderID + iteam.val().groupId);
+        }
       });
       setGReqList(arr);
     });
   }, []);
+
   useEffect(() => {
     const groupsMemberRef = ref(db, "groupsMember");
     onValue(groupsMemberRef, (snapshot) => {
@@ -90,15 +92,12 @@ const GroupList = () => {
         arr.push(gmiteam.val().whoSenderID + gmiteam.val().groupId);
       });
       setGroupMemberList(arr);
+      
     });
   }, []);
 
   let handleGroupReqSend = (iteam) => {
     set(push(ref(db, "groupRequest")), {
-      //    ata dela o (adminName: iteam.adminName,
-      //    adminUid: iteam.adminUid,
-      //  groupName: iteam.groupName,
-      //    groupTag: iteam.groupTag) same kaj korba
       ...iteam,
       whoSenderName: userInfo.displayName,
       whoSenderID: userInfo.uid,
@@ -106,17 +105,20 @@ const GroupList = () => {
     });
   };
 
-  let handleGReqCancel = (item) => {
+  let handleGReqCancel = (iteam) => {
     const groupRequestRef = ref(db, "groupRequest");
     let groupRQId = "";
     onValue(groupRequestRef, (snapshot) => {
       snapshot.forEach((giteam) => {
-        groupRQId = giteam.key; 
+        if (iteam.groupId == giteam.val().groupId) {
+          groupRQId = giteam.key;
+        }
+        // console.log({ ...giteam.val(), groupRQId: giteam.key });
+        // console.log(groupId , groupRQId: giteam.key );
       });
-      setGroupReqSendId(groupRQId);
-      console.log("groupRequestgroupRequest", groupRQId);
+
+      remove(ref(db, "groupRequest/" + groupRQId));
     });
-    remove(ref(db, "groupRequest/" + groupReqSendId));
   };
   return (
     <div className="box">
@@ -126,19 +128,21 @@ const GroupList = () => {
       </Button>
       {groupList.map((iteam) => (
         <div className="list">
-          <Image src={gimg} className="req_profilepic"/>
+          <Image src={gimg} className="req_profilepic" />
           <h4>{iteam.groupName}</h4>
-          {/* { (iteam.whoSenderID + userInfo.uid) || (userInfo.uid + iteam.whoSenderID)} */}
           {gReqList.includes(userInfo.uid + iteam.groupId) ? (
-            
-            <Button
-              onClick={() => handleGReqCancel(iteam)}
-              className="frlistbtn"
-              variant="contained"
-            >
-              {" "}
-              Cancel
-            </Button>
+            <div className="reqbtn">
+              <Button className="reqlistDelbtn" variant="contained">
+                pending
+              </Button>
+              <Button
+                onClick={() => handleGReqCancel(iteam)}
+                className="reqlistDelbtn"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+            </div>
           ) : groupMemberList.includes(userInfo.uid + iteam.groupId) ? (
             <Button className="joinedbtn" variant="contained">
               Joined
@@ -201,8 +205,3 @@ const GroupList = () => {
 };
 
 export default GroupList;
-
-
-
-
-
