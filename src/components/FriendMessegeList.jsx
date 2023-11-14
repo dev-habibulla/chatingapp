@@ -37,7 +37,7 @@ const FriendMessegeList = () => {
     if (userInfo.uid == iteam.whoSenderID) {
       dispatch(
         activeChat({
-          type:"single",
+          type: "single",
           activeUid: iteam.whoReceverID,
           activeName: iteam.whoReceverName,
           activePic: iteam.whoReceverPicture,
@@ -46,7 +46,7 @@ const FriendMessegeList = () => {
     } else {
       dispatch(
         activeChat({
-          type:"single",
+          type: "single",
           activeUid: iteam.whoSenderID,
           activeName: iteam.whoSenderName,
           activePic: iteam.whoSenderPicture,

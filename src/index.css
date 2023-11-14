@@ -482,9 +482,11 @@ h4 {
   margin: 20px 0;
   display: flex;
   justify-content: end;
+  flex-direction: column;
+  align-items: end;
 }
 
-.sendmsg p {
+.msgSendText {
   background: #5F35F5;
   display: inline-block;
   padding: 10px 15px;
@@ -496,7 +498,7 @@ h4 {
   margin: 20px 0;
 }
 
-.receivedmsg p {
+.msgRecText {
   background: #f1f1f1;
   display: inline-block;
   padding: 10px 15px;
@@ -594,6 +596,12 @@ h4 {
   right: 85px;
 }
 
+.imgSendbtn {
+  position: absolute;
+  top: 8px;
+  right: 120px;
+}
+
 .sendbtn {
   margin-left: 10px !important;
   padding: 4px 15px !important;
@@ -622,4 +630,19 @@ h4 {
   width: 60px;
   height: 60px;
   border-radius: 50px;
+}
+
+.msgTime {
+  padding-top: 3px;
+  font-weight: 400;
+  font-size: 10px;
+  color: hwb(0 10% 90% / 0.43);
+
+}
+.msgImgTime {
+  padding-top: 3px;
+  font-weight: 400;
+  font-size: 30px;
+  color: hwb(0 4% 0%)
+
 }

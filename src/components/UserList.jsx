@@ -107,6 +107,7 @@ const UserList = () => {
           
           const frRQId = fRQitem.key;
           remove(ref(db, "friendRequest/" + frRQId));
+          
         }
       });
     });
