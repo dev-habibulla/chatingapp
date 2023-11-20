@@ -33,38 +33,97 @@ const Msg = () => {
   let [msg, setMsg] = useState("");
   let [audio, setAudio] = useState("");
   let [msgList, setMsgList] = useState([]);
+  let [groupMsgList, setGroupMsgList] = useState([]);
+  let [blockList, setBlockList] = useState([]);
   let activeInfo = useSelector((state) => state.activeChat.value);
   let userInfo = useSelector((state) => state.logedUser.value);
 
+  const isBlocked = blockList.some((bitem) => bitem.whoBlockerById === userInfo.uid);
+
+
+
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
-
-    // const audio = document.createElement("audio");
-    // audio.src = url;
-    // audio.controls = true;
-    // document.body.appendChild(audio);
     setAudio(blob);
   };
 
   let handleMsgSend = () => {
-    if (activeInfo.type === "single") {
-      set(push(ref(db, "singleMsg")), {
-        whoMsgSenderId: userInfo.uid,
-        whoMsgSenderName: userInfo.displayName,
-        whoMsgSenderPic: userInfo.photoURL,
-        whoMsgReceverId: activeInfo.activeUid,
-        whoMsgReceverName: activeInfo.activeName,
-        whoMsgReceverPic: activeInfo.activePic,
-        msg: msg,
-        date: `${new Date().getFullYear()}-${
-          new Date().getMonth() + 1
-        }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-      });
-      setMsg("");
-    } else {
-      console.log("hshsdhs");
-    }
+
+    {blockList.map((bitem)=>(
+      bitem.blockId == userInfo.uid ?
+console.log("not send")
+:console.log("Done send")
+
+
+
+     ))}
+
+
+    // if (activeInfo.type === "single") {
+    //   set(push(ref(db, "singleMsg")), {
+    //     whoMsgSenderId: userInfo.uid,
+    //     whoMsgSenderName: userInfo.displayName,
+    //     whoMsgSenderPic: userInfo.photoURL,
+    //     whoMsgReceverId: activeInfo.activeUid,
+    //     whoMsgReceverName: activeInfo.activeName,
+    //     whoMsgReceverPic: activeInfo.activePic,
+    //     msg: msg,
+    //     date: `${new Date().getFullYear()}-${
+    //       new Date().getMonth() + 1
+    //     }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+    //   });
+    //   setMsg("");
+    // } else {
+    //   console.log({
+    //     whoMsgSenderId: userInfo.uid,
+    //     whoMsgSenderName: userInfo.displayName,
+    //     whoMsgSenderPic: userInfo.photoURL,
+    //     MsgReceverGroupId: activeInfo.activeUid,
+    //     MsgReceverGroupName: activeInfo.activeName,
+    //     gMsg: msg,
+    //   });
+
+    //   set(push(ref(db, "groupMsg")), {
+    //     whoMsgSenderId: userInfo.uid,
+    //     whoMsgSenderName: userInfo.displayName,
+    //     whoMsgSenderPic: userInfo.photoURL,
+    //     MsgReceverGroupId: activeInfo.activeUid,
+    //     MsgReceverGroupName: activeInfo.activeName,
+    //     gMsg: msg,
+    //     date: `${new Date().getFullYear()}-${
+    //       new Date().getMonth() + 1
+    //     }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+    //   });
+    //   setMsg("");
+    // }
+
+
+
   };
+
+  useEffect(() => {
+    const blockRef = ref(db, "block");
+    onValue(blockRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((iteam) => {
+        arr.push({ ...iteam.val(), bid: iteam.key });
+      });
+      setBlockList(arr);
+    });
+  }, []);
+
+  useEffect(() => {
+    const groupMsgRef = ref(db, "groupMsg");
+    onValue(groupMsgRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((iteam) => {
+        if (iteam.val().MsgReceverGroupId == activeInfo.activeUid) {
+          arr.push(iteam.val());
+        }
+      });
+      setGroupMsgList(arr);
+    });
+  }, [activeInfo]);
 
   useEffect(() => {
     const singleMsgRef = ref(db, "singleMsg");
@@ -85,13 +144,9 @@ const Msg = () => {
   }, [activeInfo]);
 
   let hangleImageUpload = (e) => {
-    console.log(e.target.files[0]);
-
     const storageRef = imgref(storage, e.target.files[0].name + Date.now());
 
-    // 'file' comes from the Blob or File API
     uploadBytes(storageRef, e.target.files[0]).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
       getDownloadURL(storageRef).then((downloadURL) => {
         if (activeInfo.type === "single") {
           set(push(ref(db, "singleMsg")), {
@@ -107,17 +162,23 @@ const Msg = () => {
             }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
           });
         } else {
-          console.log("hehehe");
+          set(push(ref(db, "groupMsg")), {
+            whoMsgSenderId: userInfo.uid,
+            whoMsgSenderName: userInfo.displayName,
+            whoMsgSenderPic: userInfo.photoURL,
+            MsgReceverGroupId: activeInfo.activeUid,
+            MsgReceverGroupName: activeInfo.activeName,
+            gImg: downloadURL,
+            date: `${new Date().getFullYear()}-${
+              new Date().getMonth() + 1
+            }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          });
         }
-
-        console.log("File available at", downloadURL);
       });
     });
   };
   let handleAudioUpload = (e) => {
     const storageRef = imgref(storage, Date.now().toString());
-
-    // 'file' comes from the Blob or File API
     uploadBytes(storageRef, audio).then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
         if (activeInfo.type === "single") {
@@ -132,30 +193,101 @@ const Msg = () => {
             date: `${new Date().getFullYear()}-${
               new Date().getMonth() + 1
             }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          }).then(() => {
+            setAudio("");
           });
         } else {
-          console.log("hehehe");
+          set(push(ref(db, "groupMsg")), {
+            whoMsgSenderId: userInfo.uid,
+            whoMsgSenderName: userInfo.displayName,
+            whoMsgSenderPic: userInfo.photoURL,
+            MsgReceverGroupId: activeInfo.activeUid,
+            MsgReceverGroupName: activeInfo.activeName,
+            gAudio: downloadURL,
+            date: `${new Date().getFullYear()}-${
+              new Date().getMonth() + 1
+            }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          }).then(() => {
+            setAudio("");
+          });
         }
-
-        console.log("File available at", downloadURL);
       });
     });
   };
+
+
 
   return (
     <>
       {activeInfo && (
         <div className="msgbox">
           <div className="activeChatData">
-            {/* <Image src={activeInfo.activePic} className="activeChatImg" />
-            <h4>{activeInfo.activeName}</h4> */}
-
             <>
               <Image src={activeInfo.activePic} className="activeChatImg" />
               <h4>{activeInfo.activeName}</h4>
             </>
           </div>
           <div className="containermsg">
+            {groupMsgList.map((item) =>
+              item.gMsg ? (
+                item.whoMsgSenderId == userInfo.uid ? (
+                  <div className="sendmsg">
+                    <p className="msgSendText">{item.gMsg}</p>
+                    <h6 className="msgTime">
+                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
+                  </div>
+                ) : (
+                  <div className="receivedmsg">
+                    <p className="msgRecText">{item.gMsg}</p>
+                    <p className="msgTime">{item.whoMsgSenderName}</p>
+                    <h6 className="msgTime">
+                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
+                  </div>
+                )
+              ) : item.gAudio ? (
+                item.whoMsgSenderId == userInfo.uid ? (
+                  <div className="sendaudio">
+                    <audio src={item.gAudio} controls></audio>
+                  </div>
+                ) : (
+                  <div className="receiveaudio">
+                    <audio src={item.gAudio} controls></audio>
+                  </div>
+                )
+              ) : item.whoMsgSenderId == userInfo.uid ? (
+                <div className="sendimg">
+                  <div className="imgbox">
+                    <ModalImage
+                      small={item.gImg}
+                      large={item.gImg}
+                      alt="Hello World!"
+                    />
+                  </div>
+                  
+                  <h6 className="msgTime">
+                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
+                </div>
+              ) : (
+                <div className="receivedimg">
+                  <div className="imgbox">
+                    <ModalImage
+                      small={item.gImg}
+                      large={item.gImg}
+                      alt="Hello World!"
+                    />
+                  </div>
+                  <p className="msgTime">{item.whoMsgSenderName}</p>
+                  <h6 className="msgTime">
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                  </h6>
+                </div>
+              )
+
+            )}
+
             {msgList.map((iteam) =>
               iteam.msg ? (
                 iteam.whoMsgSenderId == userInfo.uid ? (
@@ -177,10 +309,16 @@ const Msg = () => {
                 iteam.whoMsgSenderId == userInfo.uid ? (
                   <div className="sendaudio">
                     <audio src={iteam.audio} controls></audio>
+                    <h6 className="msgTime">
+                      {moment(iteam.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
                   </div>
                 ) : (
                   <div className="receiveaudio">
                     <audio src={iteam.audio} controls></audio>
+                    <h6 className="msgTime">
+                      {moment(iteam.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
                   </div>
                 )
               ) : iteam.whoMsgSenderId == userInfo.uid ? (
@@ -192,9 +330,9 @@ const Msg = () => {
                       alt="Hello World!"
                     />
                   </div>
-                  <h6 className="msgImgTime">
-                    {moment(iteam.date, "YYYYMMDD hh:mm").fromNow()}
-                  </h6>
+                  <h6 className="msgTime">
+                      {moment(iteam.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
                 </div>
               ) : (
                 <div className="receivedimg">
@@ -205,9 +343,9 @@ const Msg = () => {
                       alt="Hello World!"
                     />
                   </div>
-                  <h6 className="msgImgTime">
-                    {moment(iteam.date, "YYYYMMDD hh:mm").fromNow()}
-                  </h6>
+                  <h6 className="msgTime">
+                      {moment(iteam.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h6>
                 </div>
               )
             )}
@@ -226,7 +364,10 @@ const Msg = () => {
               <video width="320" height="240" controls></video>
             </div> */}
           </div>
-          {audio ? (
+         
+        <div className="inputBox">
+        {  
+          audio ? (
             <>
               <audio src={URL.createObjectURL(audio)} controls></audio>
               <Button variant="contained" onClick={handleAudioUpload}>
@@ -242,15 +383,17 @@ const Msg = () => {
             </>
           ) : (
             <div className="msgField">
-              <AudioRecorder
-                onRecordingComplete={addAudioElement}
-                audioTrackConstraints={{
-                  noiseSuppression: true,
-                  echoCancellation: true,
-                }}
-                downloadOnSavePress={false}
-                downloadFileExtension="webm"
-              />
+              <div className="audioSendbtn">
+                <AudioRecorder
+                  onRecordingComplete={addAudioElement}
+                  audioTrackConstraints={{
+                    noiseSuppression: true,
+                    echoCancellation: true,
+                  }}
+                  downloadOnSavePress={false}
+                  downloadFileExtension="webm"
+                />
+              </div>
 
               <TextField
                 id="outlined-basic"
@@ -286,6 +429,19 @@ const Msg = () => {
               )}
             </div>
           )}
+
+        </div>
+        
+       
+     
+       
+
+
+        
+
+
+
+
         </div>
       )}
     </>

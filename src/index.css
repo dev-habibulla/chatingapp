@@ -508,6 +508,8 @@ h4 {
 .sendimg {
   margin: 20px 0;
   display: flex;
+  flex-direction: column;
+  align-items: end;
   justify-content: end;
 }
 
@@ -554,12 +556,16 @@ h4 {
 .sendaudio {
   margin: 20px 0;
   display: flex;
+  flex-direction: column;
+  align-items: end;
   justify-content: end;
 }
 
 .sendvideo {
   margin: 20px 0;
   display: flex;
+  flex-direction: column;
+  align-items: end;
   justify-content: end;
 }
 
@@ -602,6 +608,24 @@ h4 {
   right: 120px;
 }
 
+/* .audioSendbtn {
+  position: absolute;
+  top: 60px;
+  right: 319px;
+} */
+
+/* .audio-recorder-mic {
+
+  height: 16px !important;
+  padding: 8px !important;
+}
+
+.audio-recorder {
+
+  width: 24px !important;
+
+} */
+
 .sendbtn {
   margin-left: 10px !important;
   padding: 4px 15px !important;
@@ -639,10 +663,10 @@ h4 {
   color: hwb(0 10% 90% / 0.43);
 
 }
+
 .msgImgTime {
   padding-top: 3px;
   font-weight: 400;
   font-size: 30px;
   color: hwb(0 4% 0%)
-
 }
