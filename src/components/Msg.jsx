@@ -49,53 +49,44 @@ const Msg = () => {
 
   let handleMsgSend = () => {
 
-    {blockList.map((bitem)=>(
-      bitem.blockId == userInfo.uid ?
-console.log("not send")
-:console.log("Done send")
 
+    if (activeInfo.type === "single") {
+      set(push(ref(db, "singleMsg")), {
+        whoMsgSenderId: userInfo.uid,
+        whoMsgSenderName: userInfo.displayName,
+        whoMsgSenderPic: userInfo.photoURL,
+        whoMsgReceverId: activeInfo.activeUid,
+        whoMsgReceverName: activeInfo.activeName,
+        whoMsgReceverPic: activeInfo.activePic,
+        msg: msg,
+        date: `${new Date().getFullYear()}-${
+          new Date().getMonth() + 1
+        }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+      });
+      setMsg("");
+    } else {
+      console.log({
+        whoMsgSenderId: userInfo.uid,
+        whoMsgSenderName: userInfo.displayName,
+        whoMsgSenderPic: userInfo.photoURL,
+        MsgReceverGroupId: activeInfo.activeUid,
+        MsgReceverGroupName: activeInfo.activeName,
+        gMsg: msg,
+      });
 
-
-     ))}
-
-
-    // if (activeInfo.type === "single") {
-    //   set(push(ref(db, "singleMsg")), {
-    //     whoMsgSenderId: userInfo.uid,
-    //     whoMsgSenderName: userInfo.displayName,
-    //     whoMsgSenderPic: userInfo.photoURL,
-    //     whoMsgReceverId: activeInfo.activeUid,
-    //     whoMsgReceverName: activeInfo.activeName,
-    //     whoMsgReceverPic: activeInfo.activePic,
-    //     msg: msg,
-    //     date: `${new Date().getFullYear()}-${
-    //       new Date().getMonth() + 1
-    //     }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-    //   });
-    //   setMsg("");
-    // } else {
-    //   console.log({
-    //     whoMsgSenderId: userInfo.uid,
-    //     whoMsgSenderName: userInfo.displayName,
-    //     whoMsgSenderPic: userInfo.photoURL,
-    //     MsgReceverGroupId: activeInfo.activeUid,
-    //     MsgReceverGroupName: activeInfo.activeName,
-    //     gMsg: msg,
-    //   });
-
-    //   set(push(ref(db, "groupMsg")), {
-    //     whoMsgSenderId: userInfo.uid,
-    //     whoMsgSenderName: userInfo.displayName,
-    //     whoMsgSenderPic: userInfo.photoURL,
-    //     MsgReceverGroupId: activeInfo.activeUid,
-    //     MsgReceverGroupName: activeInfo.activeName,
-    //     gMsg: msg,
-    //     date: `${new Date().getFullYear()}-${
-    //       new Date().getMonth() + 1
-    //     }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-    //   });
-    //   setMsg("");
-    // }
+      set(push(ref(db, "groupMsg")), {
+        whoMsgSenderId: userInfo.uid,
+        whoMsgSenderName: userInfo.displayName,
+        whoMsgSenderPic: userInfo.photoURL,
+        MsgReceverGroupId: activeInfo.activeUid,
+        MsgReceverGroupName: activeInfo.activeName,
+        gMsg: msg,
+        date: `${new Date().getFullYear()}-${
+          new Date().getMonth() + 1
+        }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+      });
+      setMsg("");
+    }
 
 
 

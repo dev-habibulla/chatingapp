@@ -6,6 +6,7 @@ import GroupMessageList from './../components/GroupMessageList';
 import FriendMessegeList from './../components/FriendMessegeList';
 import Msg from './../components/Msg';
 
+
 const Message = () => {
   return (
     <div>
