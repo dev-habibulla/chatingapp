@@ -31,6 +31,21 @@ const UserList = () => {
 
   let userInfo = useSelector((state) => state.logedUser.value);
 
+  // useEffect(() => {
+  //   const userRef = ref(db, "notification");
+
+  //   onValue(userRef, (snapshot) => {
+  //     let arr = [];
+  //     snapshot.forEach((iteam) => {
+  //       if (userInfo.uid = iteam.whoNotiReceverID) {
+  //         arr.push(iteam.val());
+  //       }
+  //     });
+  //     setUsersList(arr);
+  //   });
+  // }, []);
+
+
   useEffect(() => {
     const userRef = ref(db, "users");
 
@@ -85,8 +100,9 @@ const UserList = () => {
     // console.log("info",userInfo.uid,userInfo.displayName);
 
     // setReqBtnLoad(true);
+    const friendRequestRef = push(ref(db, "friendRequest"));
 
-    set(push(ref(db, "friendRequest")), {
+    set(friendRequestRef, {
       whoSenderName: userInfo.displayName,
       whoSenderID: userInfo.uid,
       whoSenderPicture: userInfo.photoURL,
@@ -95,6 +111,18 @@ const UserList = () => {
       whoReceverPicture: info.profile_picture,
     }).then(() => {
       setReqBtnLoad(false);
+      const friendRequestId = friendRequestRef.key;
+    console.log("Friend request added successfully with ID:", friendRequestId);
+      set(push(ref(db, "notification")), {
+        whoNotiSenderName: userInfo.displayName,
+        whoNotiSenderID: userInfo.uid,
+        whoNotiSenderPicture: userInfo.photoURL,
+        friendRequestId:friendRequestId,
+        notiText: "Friend Request",
+        whoNotiReceverName: info.username,
+        whoNotiReceverID: info.userId,
+        whoNotiReceverPicture: info.profile_picture,
+      });
     });
   };
 
@@ -108,6 +136,7 @@ const UserList = () => {
         ) {
           const frRQId = fRQitem.key;
           remove(ref(db, "friendRequest/" + frRQId));
+         // remove(ref(db, "notification/" + friendRequestId));
         }
       });
     });
