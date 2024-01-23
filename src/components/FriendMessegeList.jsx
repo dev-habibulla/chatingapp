@@ -1,6 +1,6 @@
+
 import React, { useEffect, useState } from "react";
 import Image from "./Image";
-import Button from "@mui/material/Button";
 import { activeChat } from "../slices/activeChatSlice";
 import {
   getDatabase,
